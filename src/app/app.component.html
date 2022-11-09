@@ -1,0 +1,6 @@
+<app-toolbar [historyLoaded]="historyLoaded"></app-toolbar>
+<a href="#" *ngIf="historyLoaded" (click)="historyLoaded = !historyLoaded">Go back</a>
+<div class="content" role="main">
+  <app-file-picker *ngIf="!historyLoaded" (fileOpenEvent)="setHistory($event)"></app-file-picker>
+  <app-history-list *ngIf="historyLoaded" [history]="history"></app-history-list>
+</div>

@@ -1,0 +1,29 @@
+:host {
+    font-family: sans-serif, "Helvetica Neue", Helvetica, Arial;
+    font-size: 14px;
+    color: #FFF;
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+p {
+    margin: 0;
+}
+
+.content {
+    display: flex;
+    margin: 80px auto 32px;
+    padding: 0 16px;
+    max-width: 960px;
+    flex-direction: column;
+    align-items: center;
+}
+
+a {
+    position: sticky;
+    top: 20px;
+    left: 20px;
+    font-size: 1.5em;
+    font-weight: 600;
+}

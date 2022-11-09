@@ -1,0 +1,24 @@
+body {
+    background-color: #191414;
+    overflow-y: scroll;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 8px 0;
+}
+
+a,
+a:visited,
+a:hover {
+  color: #1DB954;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #1DB954;
+}

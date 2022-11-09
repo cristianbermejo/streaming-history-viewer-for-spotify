@@ -1,0 +1,14 @@
+<div class="main-container">
+    <div class="text-container">
+        <h2>This app will let you view your extended streaming history files obtained from the <a href="https://www.spotify.com/account/privacy/" target="_blank">download your data</a> tool.</h2>
+        <p>To get started, press the following button and select your JSON file.</p>
+    </div>
+
+    <div class="picker-container">
+        <button (click)="fileUpload.click()">
+            <span>Select file...</span>
+        </button>
+
+        <input type="file" (change)="fileOpenEvent.emit(openFile($event))" #fileUpload/>
+    </div>
+</div>
