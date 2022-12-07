@@ -9,6 +9,6 @@
             <span>Select file...</span>
         </button>
 
-        <input type="file" (change)="fileOpenEvent.emit(openFile($event))" #fileUpload/>
+        <input type="file" (change)="fileOpenEvent.emit(openFile($event))" #fileUpload multiple/>
     </div>
 </div>

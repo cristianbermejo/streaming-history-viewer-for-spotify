@@ -16,10 +16,10 @@ export class FilePickerComponent implements OnInit {
   }
 
   openFile(event: any): Promise<{ [id:string]: Entry[]}> {
-    let file = event.target.files[0];
+    let files = event.target.files;
 
-    if (file) {
-      return this.historyService.getEntriesGroupedByDate(file);
+    if (files.length > 0) {
+      return this.historyService.getEntriesGroupedByDate(files);
     } else {
       return new Promise((resolve) => resolve({}));
     }
