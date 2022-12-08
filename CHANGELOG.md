@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.1
+
+* FIX: List items are not appended when multiple files are selected
+
 ## 0.2.0
 
 * Added support for opening multiple files at the same time.

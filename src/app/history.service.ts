@@ -60,7 +60,11 @@ export class HistoryService {
         // Sort the entries also by date
         let keys = Object.keys(unsortedGroupedEntries);
         for (let i = 0; i < keys.length; i++) {
-          this.groupedEntries[keys[i]] = unsortedGroupedEntries[keys[i]].sort(this.sort);
+          if (!this.groupedEntries[keys[i]]) {
+            this.groupedEntries[keys[i]] = [];
+          }
+          
+          this.groupedEntries[keys[i]] = [...this.groupedEntries[keys[i]], ...unsortedGroupedEntries[keys[i]].sort(this.sort)];
         }
       }
 
