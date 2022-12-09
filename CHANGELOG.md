@@ -2,7 +2,7 @@
 
 ## 0.2.1
 
-* FIX: List items are not appended when multiple files are selected
+* Fixed: List items are not appended when multiple files are selected
 
 ## 0.2.0
 
