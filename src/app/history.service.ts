@@ -6,52 +6,72 @@ import { Entry } from './entry.model';
 })
 export class HistoryService {
   entries: { [id: string]: Entry[] };
+  itemsPerPage = 100;
+  filesLoaded = 0;
 
   constructor() {
     this.entries = {};
   }
 
-  getEntries(): Promise<{ [id:string]: Entry[] }> {
+  getEntries(page: number = 0): Promise<{ [id:string]: Entry[] }> {
     return new Promise((resolve) => {
-      resolve(this.entries);
+      let pagedEntries: { [id:string]: Entry[] } = {};
+
+      let keys = Object.keys(this.entries);
+      let startingItemCount = this.itemsPerPage * page;
+      let endingItemCount = startingItemCount + this.itemsPerPage;
+      let itemCount = 0;
+
+      loop: for (let i = 0; i < keys.length; i++) {
+        pagedEntries[keys[i]] = [];
+
+        for (let j = 0; j < this.entries[keys[i]].length; j++) {
+          if (itemCount >= startingItemCount && itemCount < endingItemCount) {
+            pagedEntries[keys[i]].push(this.entries[keys[i]][j]);
+          } else if (itemCount >= endingItemCount) {
+            break loop;
+          }
+
+          ++itemCount;
+        }
+      }
+
+      resolve(pagedEntries);
     });
   }
 
-  setEntries(files: File[]) {
-    let reader: FileReader;
-
-    let onload = (event: any) => {
-      let loadedEntries = JSON.parse(event.target.result) as Entry[];
-  
-      // Group entries by date
-      let unsortedGroupedEntries: { [id: string]: Entry[] } = {};
-      let date = "";
-      for (let i = 0; i < loadedEntries.length; i++) {
-        date = loadedEntries[i].ts.substring(0, loadedEntries[i].ts.indexOf("T"));
-  
-        if (!unsortedGroupedEntries[date]) {
-          unsortedGroupedEntries[date] = [];
-        }
-  
-        unsortedGroupedEntries[date].push(loadedEntries[i]);
-      }
-  
-      // Sort the entries also by date
-      let keys = Object.keys(unsortedGroupedEntries);
-      for (let i = 0; i < keys.length; i++) {
-        if (!this.entries[keys[i]]) {
-          this.entries[keys[i]] = [];
-        }
-        
-        this.entries[keys[i]] = [...this.entries[keys[i]], ...unsortedGroupedEntries[keys[i]].sort((a: Entry, b: Entry) => a.ts < b.ts ? 0 : -1)];
-      }
-    }
+  setEntries(files: File[]): Promise<boolean> {
+    let promises: Promise<Entry[]>[] = [];
+    let readers: FileReader[] = [];
 
     for (let i = 0; i < files.length; i++) {
-      reader = new FileReader();
-      reader.onload = onload;
+      readers[i] = new FileReader();
 
-      reader.readAsText(files[i]);
+      promises[i] = new Promise(resolve => {
+        readers[i].onload = (event: any) => {
+          resolve(JSON.parse(event.target.result) as Entry[]);
+        }
+
+        readers[i].readAsText(files[i]);
+      });
     }
+
+    return Promise.all(promises).then(results => {
+      // Convert the result to a single array
+      results.flat()
+      // Sort results by date, from latest to oldest
+      .sort((a: Entry, b: Entry) => a.ts < b.ts ? 0 : -1)
+      // Add each entry to the entries dictionary, using the date as the key
+      .forEach(result => {
+        let key = result.ts.substring(0, result.ts.indexOf("T"));
+        if (!this.entries[key]) {
+          this.entries[key] = [];
+        }
+
+        this.entries[key].push(result);
+      });
+
+      return true;
+    });
   }
 }

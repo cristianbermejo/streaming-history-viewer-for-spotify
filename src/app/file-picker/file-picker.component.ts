@@ -15,14 +15,9 @@ export class FilePickerComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openFile(event: any): Promise<{ [id:string]: Entry[]}> {
-    let files = event.target.files;
-
-    if (files.length > 0) {
-      this.historyService.setEntries(files);
-    }
-
-    return this.historyService.getEntries();
+  openFiles(event: any): Promise<{ [id:string]: Entry[]}> {
+    return this.historyService.setEntries(event.target.files)
+    .then(results => this.historyService.getEntries());
   }
 
 }

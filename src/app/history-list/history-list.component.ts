@@ -9,7 +9,6 @@ import { Entry } from '../entry.model';
 })
 export class HistoryListComponent implements OnInit {
   @Input() history: { [id: string]: Entry[]} = {};
-  compareDesc = (a: KeyValue<string, Entry[]>, b: KeyValue<string, Entry[]>) => a.key < b.key ? 0 : -1;
 
   constructor() {
   }

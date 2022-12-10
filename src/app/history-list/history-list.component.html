@@ -1,6 +1,6 @@
-<div *ngFor="let date of history | keyvalue: compareDesc">
-    <h2>{{date.key | date: "fullDate"}}</h2>
-    <div class="entry-container" *ngFor="let entry of date.value">
+<div *ngFor="let historyEntry of history | keyvalue">
+    <h2>{{historyEntry.key | date: "fullDate"}}</h2>
+    <div class="entry-container" *ngFor="let entry of historyEntry.value">
         <p>{{entry.master_metadata_track_name}}</p>
         <i>{{entry.master_metadata_album_artist_name}}</i>
     </div>
