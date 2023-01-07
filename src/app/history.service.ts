@@ -8,6 +8,7 @@ export class HistoryService {
   entries: { [id: string]: Entry[] };
   itemsPerPage = 100;
   filesLoaded = 0;
+  numPages = 0;
 
   constructor() {
     this.entries = {};
@@ -71,7 +72,14 @@ export class HistoryService {
         this.entries[key].push(result);
       });
 
+      // Set the number of pages
+      this.numPages = results.flat().length / this.itemsPerPage;
+
       return true;
     });
+  }
+
+  getNumPages(): number {
+    return this.numPages;
   }
 }
